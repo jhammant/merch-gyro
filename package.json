@@ -1,0 +1,19 @@
+{
+  "name": "merch-gyro",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "node tests/gyro.test.mjs",
+    "serve": "python3 -m http.server 8642"
+  },
+  "license": "MIT",
+  "description": "Print-in-place gyro fidget merch for your startup: put your logo on it in the browser, download a two-colour 3MF.",
+  "dependencies": {
+    "fflate": "^0.8.3",
+    "manifold-3d": "^3.5.4",
+    "opentype.js": "^2.0.0"
+  },
+  "type": "module",
+  "devDependencies": {
+    "playwright": "^1.63.0"
+  }
+}

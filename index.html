@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>merch-gyro: startup merch you can print</title>
+  <meta name="description" content="Put your logo on a print-in-place gyro fidget. Runs in your browser, downloads a two-colour 3MF. Free and open source.">
+  <meta property="og:title" content="merch-gyro">
+  <meta property="og:description" content="Put your startup's logo on a print-in-place gyro fidget and print your own merch.">
+  <meta property="og:image" content="https://merch.hammantlabs.com/examples/orbital/preview.png">
+  <meta property="og:url" content="https://merch.hammantlabs.com/">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='none' stroke='%23e7551e' stroke-width='4'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%23e7551e'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+  <script type="importmap">
+  {
+    "imports": {
+      "manifold-3d": "https://cdn.jsdelivr.net/npm/manifold-3d@3.5.4/manifold.js",
+      "opentype.js": "https://cdn.jsdelivr.net/npm/opentype.js@2.0.0/dist/opentype.mjs",
+      "fflate": "https://cdn.jsdelivr.net/npm/fflate@0.8.3/esm/browser.js",
+      "three": "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"
+    }
+  }
+  </script>
+  <script type="module" src="src/app.js"></script>
+</head>
+<body data-ring-mode="art">
+  <header class="top">
+    <a class="brand" href="./"><span class="dot"></span>merch-gyro</a>
+    <a class="gh" href="https://github.com/jhammant/merch-gyro">Source on GitHub</a>
+  </header>
+
+  <main>
+    <section class="intro">
+      <h1>Your startup's merch, off your own printer.</h1>
+      <p>A print-in-place gyro: three rings and a core that spin on their own pins. Drop in your logo, watch it spin, download a two-colour file. It prints in one go, with no supports and nothing to assemble.</p>
+      <p class="ready">Just want ours? <a href="examples/orbital/orbital-gyro.3mf" download>Download the Orbital gyro (3MF)</a> or <a href="examples/orbital/orbital-gyro-stl.zip" download>STLs</a>.</p>
+    </section>
+
+    <section class="stage">
+      <div id="preview" class="preview" aria-label="3D preview of your gyro"></div>
+      <div class="stage-bar">
+        <label class="toggle"><input id="spin" type="checkbox" checked> Spin</label>
+        <button id="top" type="button" class="ghost">Top view</button>
+      </div>
+      <p id="status" class="status" role="status" aria-live="polite"></p>
+      <ul id="notes" class="notes"></ul>
+    </section>
+
+    <form class="panel" onsubmit="return false">
+      <fieldset>
+        <legend>1. Start from</legend>
+        <div class="seg">
+          <button type="button" data-preset="orbital" aria-pressed="true">Orbital example</button>
+          <button type="button" data-preset="startup" aria-pressed="false">Blank</button>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>2. Centre logo</legend>
+        <label id="coreDrop" class="drop">
+          <input type="file" accept=".svg,image/svg+xml,image/png,image/jpeg,image/webp">
+          <strong>Drop your logo here</strong> or click to choose. SVG is best; PNG works.
+          <span class="file">Using: <b id="coreName"></b></span>
+        </label>
+        <label class="row">Thicken thin lines
+          <input id="thicken" type="range" min="0" max="0.4" step="0.05" value="0">
+        </label>
+        <label class="check"><input id="invert" type="checkbox"> Invert (PNG: swap logo and background)</label>
+      </fieldset>
+
+      <fieldset>
+        <legend>3. Round the ring</legend>
+        <div class="seg">
+          <label><input type="radio" name="ringMode" value="text"> Text</label>
+          <label><input type="radio" name="ringMode" value="art"> Wordmark file</label>
+        </div>
+        <div class="when-text">
+          <input id="ringText" type="text" maxlength="40" placeholder="YOUR STARTUP" aria-label="Ring text">
+          <label class="row">Font
+            <select id="ringFont"><option value="sans">Sans (Manrope)</option><option value="mono">Mono (JetBrains Mono)</option></select>
+          </label>
+        </div>
+        <label id="ringDrop" class="drop when-art">
+          <input type="file" accept=".svg,image/svg+xml,image/png,image/jpeg,image/webp">
+          <strong>Drop your wordmark</strong> (SVG best). Each letter is laid round the ring.
+          <span class="file">Using: <b id="ringArtName"></b></span>
+        </label>
+        <label class="row stack">Bottom line (your URL)
+          <input id="bottom" type="text" maxlength="40" placeholder="YOURSTARTUP.COM">
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>4. Colours and fit</legend>
+        <div class="colours">
+          <label><input id="bodyColour" type="color" value="#1d1d1f"> Body</label>
+          <label><input id="artColour" type="color" value="#e7551e"> Logo</label>
+        </div>
+        <div class="seg fit">
+          <label><input type="radio" name="fit" value="snug"> Snug</label>
+          <label><input type="radio" name="fit" value="standard" checked> Standard</label>
+          <label><input type="radio" name="fit" value="loose"> Loose</label>
+        </div>
+        <p class="hint">Gap between rings: snug 0.4 mm, standard 0.5 mm, loose 0.6 mm. Go looser if your printer fuses the rings.</p>
+      </fieldset>
+
+      <fieldset>
+        <legend>5. Download</legend>
+        <button id="dl3mf" type="button" class="primary">Download 3MF (two colours)</button>
+        <button id="dlstl" type="button" class="ghost wide">STL files (.zip)</button>
+        <details>
+          <summary>How to print it</summary>
+          <ul>
+            <li>56 mm across, 8.6 mm tall. About 30 minutes and 14 g of PLA on a Bambu P1S.</li>
+            <li><b>Two colours (AMS):</b> open the 3MF in Bambu Studio or OrcaSlicer. The body is filament 1 and the logo is filament 2; there is one colour change per plate.</li>
+            <li><b>One colour, swap by hand:</b> print the one-colour STL and add a filament change at <b>8.2 mm</b>.</li>
+            <li>0.2 mm layers, no supports, no brim. Copy it nine times on a plate; it is still one colour change.</li>
+            <li>When it is done, twist each ring gently to free it. If one sticks at the bottom, run a craft knife round that gap, or reprint on Loose.</li>
+          </ul>
+        </details>
+      </fieldset>
+    </form>
+  </main>
+
+  <footer>
+    <p>Made by <a href="https://www.linkedin.com/in/jhammant/">Jon Hammant</a>, CEO of <a href="https://orbitalhq.com">Orbital</a>, for the first batch of Orbital merch. Everything runs in your browser; your logo never leaves it.</p>
+    <p>Code MIT. The Orbital name, cross and wordmark are Orbital's trademarks and are here as an example only. Fonts: Manrope and JetBrains Mono (SIL OFL).</p>
+  </footer>
+</body>
+</html>

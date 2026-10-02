@@ -1,0 +1,133 @@
+@font-face {
+  font-family: "Manrope";
+  src: url("fonts/Manrope-ExtraBold.ttf") format("truetype");
+  font-weight: 800;
+  font-display: swap;
+}
+
+:root {
+  --bg: #f4f2ee;
+  --panel: #ffffff;
+  --ink: #16171a;
+  --muted: #5d6068;
+  --line: #e2ded6;
+  --accent: #e7551e;
+  --accent-ink: #ffffff;
+  --stage: #ebe8e1;
+  --ok: #1f7a4a;
+  --bad: #b3261e;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #111317;
+    --panel: #181b21;
+    --ink: #eceae6;
+    --muted: #a3a6ad;
+    --line: #2a2e36;
+    --stage: #161920;
+    --ok: #57c48a;
+    --bad: #ff8a80;
+    color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font: 16px/1.5 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+a { color: inherit; }
+
+.top {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 18px 24px; max-width: 1240px; margin: 0 auto;
+}
+.brand { font: 800 20px/1 "Manrope", sans-serif; text-decoration: none; display: flex; gap: 10px; align-items: center; letter-spacing: -0.01em; }
+.dot { width: 18px; height: 18px; border-radius: 50%; border: 4px solid var(--accent); position: relative; }
+.dot::after { content: ""; position: absolute; inset: 3px; border-radius: 50%; background: var(--accent); }
+.gh { font-size: 14px; color: var(--muted); }
+
+main {
+  max-width: 1240px; margin: 0 auto; padding: 0 24px 32px;
+  display: grid; gap: 24px;
+  grid-template-columns: minmax(0, 1.35fr) minmax(320px, 1fr);
+  grid-template-areas: "intro intro" "stage panel";
+}
+.intro { grid-area: intro; max-width: 760px; }
+.intro h1 { font: 800 clamp(30px, 4.4vw, 52px)/1.05 "Manrope", sans-serif; letter-spacing: -0.025em; margin: 12px 0 14px; }
+.intro p { color: var(--muted); font-size: 18px; margin: 0; }
+.intro p.ready { margin-top: 10px; font-size: 16px; color: var(--ink); }
+.intro p.ready a { color: var(--accent); font-weight: 600; }
+
+.stage { grid-area: stage; position: sticky; top: 16px; align-self: start; }
+.preview { aspect-ratio: 1 / 1; background: var(--stage); border-radius: 18px; overflow: hidden; touch-action: none; }
+.preview canvas { width: 100% !important; height: 100% !important; display: block; }
+.stage-bar { display: flex; gap: 12px; align-items: center; margin-top: 10px; }
+.status { margin: 10px 0 0; font-size: 14px; color: var(--muted); min-height: 1.5em; }
+.status[data-kind="ok"] { color: var(--ok); }
+.status[data-kind="ok"]::before { content: "✓ "; font-weight: 700; }
+.status[data-kind="bad"] { color: var(--bad); }
+.notes { margin: 6px 0 0; padding-left: 18px; font-size: 14px; color: var(--bad); }
+
+.panel { grid-area: panel; background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 8px 20px 20px; }
+fieldset { border: 0; padding: 14px 0; margin: 0; border-bottom: 1px solid var(--line); }
+fieldset:last-child { border-bottom: 0; }
+legend { font: 800 15px/1 "Manrope", sans-serif; padding: 0; margin-bottom: 12px; float: left; width: 100%; }
+legend + * { clear: both; }
+
+.seg { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.seg button, .seg label {
+  flex: 1; min-width: 0; text-align: center; padding: 9px 10px; border-radius: 10px;
+  border: 1px solid var(--line); background: transparent; color: var(--ink); font-family: inherit; font-size: 14px; font-weight: 600; line-height: 1.2; cursor: pointer;
+}
+.seg button[aria-pressed="true"], .seg label:has(input:checked) { border-color: var(--ink); background: var(--ink); color: var(--bg); }
+.seg label input { position: absolute; opacity: 0; pointer-events: none; }
+
+.drop {
+  display: block; border: 1.5px dashed var(--line); border-radius: 12px; padding: 14px; font-size: 14px;
+  color: var(--muted); cursor: pointer; margin-bottom: 10px; transition: border-color .15s, background .15s;
+}
+.drop strong { color: var(--ink); }
+.drop.over, .drop:hover { border-color: var(--accent); }
+.drop input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.drop .file { display: block; margin-top: 6px; font-size: 13px; overflow-wrap: anywhere; }
+
+input[type="text"], select {
+  width: 100%; font: inherit; color: var(--ink); background: var(--bg); border: 1px solid var(--line);
+  border-radius: 10px; padding: 9px 12px; margin-bottom: 8px;
+}
+.row { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 14px; margin: 4px 0 8px; }
+.row select, .row input[type="range"] { width: 60%; margin: 0; }
+.row.stack { flex-direction: column; align-items: stretch; gap: 6px; }
+.check { display: flex; gap: 8px; align-items: center; font-size: 14px; color: var(--muted); }
+.colours { display: flex; gap: 16px; margin-bottom: 10px; font-size: 14px; }
+.colours label { display: flex; align-items: center; gap: 8px; }
+input[type="color"] { width: 38px; height: 32px; border: 1px solid var(--line); border-radius: 8px; padding: 2px; background: var(--bg); }
+.hint { font-size: 13px; color: var(--muted); margin: 0; }
+
+body[data-ring-mode="text"] .when-art, body[data-ring-mode="art"] .when-text { display: none; }
+
+button.primary {
+  width: 100%; padding: 13px 16px; border: 0; border-radius: 12px; background: var(--accent); color: var(--accent-ink);
+  font: 800 16px/1 "Manrope", sans-serif; cursor: pointer;
+}
+button.primary:hover { filter: brightness(1.06); }
+button.ghost { padding: 8px 14px; border-radius: 10px; border: 1px solid var(--line); background: transparent; color: var(--ink); font-family: inherit; font-size: 14px; font-weight: 600; cursor: pointer; }
+button.wide { width: 100%; margin-top: 8px; padding: 11px; }
+.toggle { display: flex; gap: 6px; align-items: center; font-size: 14px; }
+details { margin-top: 14px; font-size: 14px; }
+summary { cursor: pointer; font-weight: 600; }
+details ul { padding-left: 18px; color: var(--muted); }
+
+footer { max-width: 1240px; margin: 0 auto; padding: 8px 24px 40px; font-size: 13px; color: var(--muted); }
+footer p { margin: 4px 0; }
+
+@media (max-width: 860px) {
+  main { grid-template-columns: minmax(0, 1fr); grid-template-areas: "intro" "stage" "panel"; padding: 0 16px 24px; }
+  .stage { position: static; }
+  .top { padding: 14px 16px; }
+  footer { padding: 8px 16px 32px; }
+}
