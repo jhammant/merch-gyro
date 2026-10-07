@@ -2,6 +2,8 @@
 
 Startup merch you can print yourself. This is a print-in-place gyroscope fidget: three rings and a core, each spinning on its own pins. You put your logo on it in the browser and download a two-colour file. It prints in one go, with no supports and nothing to assemble.
 
+![The first Orbital gyros, straight off a Bambu P1S](docs/printed.jpg)
+
 **Make yours: [merch.hammantlabs.com](https://merch.hammantlabs.com)**
 
 ![The creator: your logo on a spinning gyro](docs/creator.png)
