@@ -19,6 +19,8 @@ I built it in my first week as CEO of [Orbital](https://orbitalhq.com), because 
 
 Everything runs in your browser. Your logo is never uploaded anywhere.
 
+The hosted copy at merch.hammantlabs.com counts page views with a cookieless loader (no cookies, no click tracking, nothing about your logo or text). It is tied to that host name, so a fork or a local copy loads nothing.
+
 ## Printing
 
 | | |
